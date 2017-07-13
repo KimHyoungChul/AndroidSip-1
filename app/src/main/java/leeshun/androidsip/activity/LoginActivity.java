@@ -19,7 +19,6 @@ import leeshun.androidsip.services.SipService;
 import leeshun.androidsip.state.Action;
 
 public class LoginActivity extends FragmentActivity implements Listener.OnLoginListener,Listener.OnRegisterListener{
-
     private EditText username;
     private EditText password;
     private Handler handler;
@@ -72,6 +71,7 @@ public class LoginActivity extends FragmentActivity implements Listener.OnLoginL
     public void OnLogin(boolean result) {
         if(result) {
             Intent intent = new Intent(this,MenuActivity.class);
+            SipProfile.getInstance().setSipUserName(username.getText().toString());
             startActivity(intent);
             this.finish();
         } else {
@@ -89,6 +89,7 @@ public class LoginActivity extends FragmentActivity implements Listener.OnLoginL
     public void OnRegister(boolean result) {
         if(result) {
             Intent intent = new Intent(this,MenuActivity.class);
+            SipProfile.getInstance().setSipUserName(username.getText().toString());
             startActivity(intent);
             this.finish();
         } else {

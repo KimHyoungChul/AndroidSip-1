@@ -18,7 +18,12 @@ import java.util.List;
 
 import leeshun.androidsip.R;
 import leeshun.androidsip.domain.ChatMessage;
+import leeshun.androidsip.domain.Interaction;
+import leeshun.androidsip.manager.ActionHolder;
+import leeshun.androidsip.manager.FriendHolder;
 import leeshun.androidsip.manager.MessageApplication;
+import leeshun.androidsip.manager.SipProfile;
+import leeshun.androidsip.state.Action;
 import leeshun.androidsip.util.ChatMessageAdapter;
 
 /**
@@ -69,16 +74,40 @@ public class ChattingActivity extends Activity {
         mMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = mMsgInput.getText().toString();
+                final String msg = mMsgInput.getText().toString();
                 if(TextUtils.isEmpty(msg)) {
                     return;
                 }
-                ChatMessage chatMessage = new ChatMessage();
+                final ChatMessage chatMessage = new ChatMessage();
                 chatMessage.setComing(false);
                 chatMessage.setDate(new Date());
                 chatMessage.setMessage(msg);
                 chatMessage.setNickname(user);
-                chatMessage.setUserId(user);
+                chatMessage.setUserId(SipProfile.getInstance().getSipUserName());
+                chatMessage.setGroupId(groupId);
+                chatMessage.setSend(false);
+                if(groupId == 0) {
+                    System.err.println("person message");
+                    System.err.println(FriendHolder.getInstance().getSipAddress(user) + "hh");
+                    if (FriendHolder.getInstance().getSipAddress(user).equals("")) {
+                        System.err.println("into subscribe");
+                        ActionHolder.getInstance().addAction(new Interaction(Action.SUBSCRIBE, "", user));
+                    }
+                } else {
+                    ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_MESSAGE,"",user + "#" + msg));
+                }
+                /*
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            if(!FriendHolder.getInstance().getSipAddress(user).equals("")) {
+                                ActionHolder.getInstance().addAction(new Interaction(Action.PERSON_MESSAGE,"",msg));
+                                chatMessage.setSend(true);
+                            }
+                        }
+                    }
+                }).start();*/
 
                 MessageApplication.getInstance().addMessage(chatMessage);
                 mDatas.add(chatMessage);

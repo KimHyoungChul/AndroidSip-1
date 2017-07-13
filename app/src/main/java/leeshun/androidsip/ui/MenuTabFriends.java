@@ -15,13 +15,17 @@ import java.util.List;
 
 import leeshun.androidsip.R;
 import leeshun.androidsip.activity.ChattingActivity;
+import leeshun.androidsip.domain.Interaction;
+import leeshun.androidsip.handler.Listener;
+import leeshun.androidsip.manager.ActionHolder;
+import leeshun.androidsip.state.Action;
 import leeshun.androidsip.util.FriendListAdapter;
 
 /**
  * Created by leeshun on 2017/7/13.
  */
 
-public class MenuTabFriends extends Fragment {
+public class MenuTabFriends extends Fragment implements Listener.OnFriendListListener {
     private FriendListAdapter mAdapter;
     private LayoutInflater mInflater;
     private ListView mFriends;
@@ -33,7 +37,9 @@ public class MenuTabFriends extends Fragment {
         super.onCreate(savedInstanceState);
         mInflater = LayoutInflater.from(getActivity());
         mDatas = new ArrayList<>();
+        Listener.onFriendListListener = this;
         mAdapter = new FriendListAdapter(mDatas,mInflater);
+        ActionHolder.getInstance().addAction(new Interaction(Action.FRIEND_LIST,"", ""));
     }
 
     @Nullable
@@ -63,4 +69,10 @@ public class MenuTabFriends extends Fragment {
     }
 
 
+    @Override
+    public void OnFriendList(List<String> users) {
+        mDatas.clear();
+        mDatas.addAll(users);
+        mAdapter.notifyDataSetChanged();
+    }
 }

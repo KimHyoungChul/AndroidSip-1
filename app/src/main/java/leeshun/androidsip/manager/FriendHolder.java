@@ -41,7 +41,7 @@ public class FriendHolder {
 
     public String getSipAddress(String username) {
         for(Friend each : friends) {
-            if(each.getUsername().equals(username)) {
+            if(each.getUsername().equals(username) && !each.getIpAddress().equals("")) {
                 return "sip:" + username + "@" + each.getIpAddress() + ":5090";
             }
         }

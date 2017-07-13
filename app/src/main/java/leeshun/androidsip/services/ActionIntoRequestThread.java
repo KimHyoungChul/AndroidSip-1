@@ -82,7 +82,7 @@ public class ActionIntoRequestThread implements Runnable {
             request = maker.makeUpdatePassword(SipProfile.getInstance().getRemoteSipAddress(),SipProfile.getInstance().getSipUserName());
         }
         else if(action == Action.SUBSCRIBE) {
-            request = maker.makeSubscribe(SipProfile.getInstance().getRemoteSipAddress(),SipProfile.getInstance().getSipUserName());
+            request = maker.makeSubscribe(SipProfile.getInstance().getRemoteSipAddress(),interaction.getMessage());
         }
         else if(action == Action.PUBLISH) {
             request = maker.makePublish(SipProfile.getInstance().getRemoteSipAddress(),SipProfile.getInstance().getLocalIP());

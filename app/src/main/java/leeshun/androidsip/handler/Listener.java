@@ -11,6 +11,7 @@ public class Listener {
     public static OnRegisterListener onRegisterListener;
     public static OnNewFriendListListener onNewFriendListListener;
     public static OnNewGroupListListener onNewGroupListListener;
+    public static OnFriendListListener onFriendListListener;
     public static interface OnLoginListener
     {
         public void OnLogin(boolean result);
@@ -28,6 +29,14 @@ public class Listener {
 
     public static interface OnNewGroupListListener {
         public void OnNewGroupList(List<String> groups);
+    }
+
+    public static interface OnFriendListListener {
+        public void OnFriendList(List<String> users);
+    }
+
+    public static void OnFriend(List<String> users) {
+        onFriendListListener.OnFriendList(users);
     }
 
     public static void OnLogin(boolean result)

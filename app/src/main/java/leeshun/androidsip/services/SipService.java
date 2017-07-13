@@ -25,8 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TooManyListenersException;
 
+import leeshun.androidsip.domain.Friend;
 import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.handler.RequestHandler;
+import leeshun.androidsip.manager.FriendHolder;
 import leeshun.androidsip.manager.SipManager;
 import leeshun.androidsip.manager.SipProfile;
 import leeshun.androidsip.state.State;
@@ -146,7 +148,16 @@ public class SipService implements SipListener{
                     }
                     Listener.OnNewFriendList(friendList);
                 }
-
+                else if(type.equals(State.GET_FRIEND_LIST)) {
+                    String result = new String(response.getRawContent());
+                    String[] friends = result.split(";");
+                    List<String> list = new ArrayList<>();
+                    for(int i = 0;i < friends.length;++i) {
+                        FriendHolder.getInstance().addFriend(new Friend(friends[i],""));
+                        list.add(friends[i]);
+                    }
+                    Listener.OnFriend(list);
+                }
                 break;
 
             case Request.SUBSCRIBE:

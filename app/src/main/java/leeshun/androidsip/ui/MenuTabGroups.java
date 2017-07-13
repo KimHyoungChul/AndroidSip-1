@@ -60,8 +60,8 @@ public class MenuTabGroups extends Fragment {
 
                 Intent intent = new Intent(getActivity(),
                         ChattingActivity.class);
-                intent.putExtra("userId", mDatas.get(position));//mDatas.get(position).getUserId()
-                intent.putExtra("GroupId",444);
+                intent.putExtra("user", mDatas.get(position));//mDatas.get(position).getUserId()
+                intent.putExtra("GroupId",1);
                 startActivity(intent);
             }
 

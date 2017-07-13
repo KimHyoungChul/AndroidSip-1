@@ -72,6 +72,7 @@ public class RequestMaker {
     public Request makeSubscribe(String to,String message) throws ParseException, InvalidArgumentException {
         Request request = makeRequest(to,Request.SUBSCRIBE);
         request.setContent(message,headerMaker.makeContentTypeHeader());
+        request.addHeader(headerMaker.makeContactHeader());
         return request;
     }
 
@@ -122,6 +123,7 @@ public class RequestMaker {
         request.setContent(State.LOGIN + message,headerMaker.makeContentTypeHeader());
         return request;
     }
+
 
     private Request makeRequest(String to,String requestMethod) throws ParseException, InvalidArgumentException {
         FromHeader fromHeader = headerMaker.makeFromHeader();

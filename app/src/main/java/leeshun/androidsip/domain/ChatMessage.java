@@ -16,6 +16,7 @@ public class ChatMessage {
     private String nickname;
     private boolean readed;
     private String dateStr;
+    private boolean isSend;
     private int groupId; //Id=0表示私聊
 
     public ChatMessage() {
@@ -44,6 +45,14 @@ public class ChatMessage {
         this.nickname = nickname;
         this.readed = readed;
         this.dateStr = dateStr;
+    }
+
+    public boolean isSend() {
+        return isSend;
+    }
+
+    public void setSend(boolean send) {
+        isSend = send;
     }
 
     public String getDateStr() {

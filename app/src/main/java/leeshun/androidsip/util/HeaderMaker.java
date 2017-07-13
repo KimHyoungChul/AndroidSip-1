@@ -77,13 +77,14 @@ public class HeaderMaker {
         return viaHeaders;
     }
 
-    public ContactHeader makeContactHeader() throws ParseException {
+    public ContactHeader makeContactHeader() throws ParseException, InvalidArgumentException {
         SipURI contactURI = addressFactory.createSipURI(sipProfile.getSipUserName(),sipProfile.getLocalIP());
         contactURI.setPort(sipProfile.getLocalPort());
         Address contactAddress = addressFactory.createAddress(contactURI);
         contactAddress.setDisplayName(sipProfile.getSipUserName());
 
         ContactHeader contactHeader = headerFactory.createContactHeader(contactAddress);
+        contactHeader.setExpires(3600);
 
         return contactHeader;
     }
