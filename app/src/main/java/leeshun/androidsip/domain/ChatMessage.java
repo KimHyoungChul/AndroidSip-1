@@ -8,12 +8,12 @@ import java.util.Date;
  */
 
 public class ChatMessage {
-    private String message;
-    private boolean isComing;
-    private Date date;
-    private String userId;
+    private String message; // message content
+    private boolean isComing; // if other send message to you ,set true
+    private Date date; // message time
+    private String userId; // sender username
     private int icon;
-    private String nickname;
+    private String nickname;// receiver username
     private boolean readed;
     private String dateStr;
     private boolean isSend;

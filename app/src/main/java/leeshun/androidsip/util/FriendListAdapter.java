@@ -48,8 +48,6 @@ public class FriendListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.mNickname = (TextView) convertView
                     .findViewById(R.id.id_nickname);
-            holder.mUserId = (TextView) convertView
-                    .findViewById(R.id.id_userId);
             holder.mWapper = (RelativeLayout) convertView
                     .findViewById(R.id.id_item_ly);
             convertView.setTag(holder);
@@ -57,14 +55,12 @@ public class FriendListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.mNickname.setText(users.get(position));
-        holder.mUserId.setText(users.get(position));
         return convertView;
     }
 
 
     private final  class ViewHolder {
         TextView mNickname;
-        TextView mUserId;
         RelativeLayout mWapper;
         //BadgeView mBadgeView;
     }

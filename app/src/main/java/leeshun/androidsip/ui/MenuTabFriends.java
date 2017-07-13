@@ -42,6 +42,12 @@ public class MenuTabFriends extends Fragment implements Listener.OnFriendListLis
         ActionHolder.getInstance().addAction(new Interaction(Action.FRIEND_LIST,"", ""));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //ActionHolder.getInstance().addAction(new Interaction(Action.FRIEND_LIST,"", ""));
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -65,7 +65,8 @@ public class ChattingActivity extends Activity {
             this.finish();
         }
 
-        mDatas = MessageApplication.getInstance().getMessage(10);
+        mNickName.setText(user);
+        mDatas = MessageApplication.getInstance().getMessage(user,groupId);
         mAdapter = new ChatMessageAdapter(this, mDatas);
         mChatMessagesListView.setAdapter(mAdapter);
         mChatMessagesListView.setSelection(mDatas.size() - 1);
@@ -88,21 +89,17 @@ public class ChattingActivity extends Activity {
                 chatMessage.setGroupId(groupId);
                 chatMessage.setSend(false);
                 if(groupId == 0) {
-                    System.err.println("person message");
-                    System.err.println(FriendHolder.getInstance().getSipAddress(user) + "hh");
                     if (FriendHolder.getInstance().getSipAddress(user).equals("")) {
                         Toast.makeText(ChattingActivity.this,"对方不在线",Toast.LENGTH_SHORT).show();
                         System.err.println("into subscribe");
-                        //ActionHolder.getInstance().addAction(new Interaction(Action.SUBSCRIBE, "", user));
                     } else {
-                        System.err.println(FriendHolder.getInstance().getSipAddress(user));
                         ActionHolder.getInstance().addAction(new Interaction(Action.PERSON_MESSAGE,
                                 FriendHolder.getInstance().getSipAddress(user),msg));
                         chatMessage.setSend(true);
                     }
                 } else {
                     ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_MESSAGE,
-                            FriendHolder.getInstance().getSipAddress(user),user + "#" + msg));
+                            "",user + "#" + msg));
                 }
 
                 /*new Thread(new Runnable() {

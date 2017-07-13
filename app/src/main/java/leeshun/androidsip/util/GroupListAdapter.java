@@ -49,8 +49,6 @@ public class GroupListAdapter extends BaseAdapter {
             holder = new viewHolder();
             holder.mNickname = (TextView) convertView
                     .findViewById(R.id.id_nickname);
-            holder.mUserId = (TextView) convertView
-                    .findViewById(R.id.id_userId);
             holder.mWapper = (RelativeLayout) convertView
                     .findViewById(R.id.id_item_ly);
             convertView.setTag(holder);
@@ -58,13 +56,11 @@ public class GroupListAdapter extends BaseAdapter {
             holder = (viewHolder) convertView.getTag();
         }
         holder.mNickname.setText(groupID);
-        holder.mUserId.setText(groupID);
         return convertView;
     }
 
     private final class viewHolder {
         TextView mNickname;
-        TextView mUserId;
         RelativeLayout mWapper;
     }
 }

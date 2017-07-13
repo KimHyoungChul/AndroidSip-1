@@ -15,13 +15,17 @@ import java.util.List;
 
 import leeshun.androidsip.R;
 import leeshun.androidsip.activity.ChattingActivity;
+import leeshun.androidsip.domain.Interaction;
+import leeshun.androidsip.handler.Listener;
+import leeshun.androidsip.manager.ActionHolder;
+import leeshun.androidsip.state.Action;
 import leeshun.androidsip.util.GroupListAdapter;
 
 /**
  * Created by leeshun on 2017/7/13.
  */
 
-public class MenuTabGroups extends Fragment {
+public class MenuTabGroups extends Fragment implements Listener.OnGroupListListener {
     private GroupListAdapter mAdapter;
     private LayoutInflater mInflater;
     private ListView mGroups;
@@ -34,12 +38,17 @@ public class MenuTabGroups extends Fragment {
         mInflater = LayoutInflater.from(getActivity());
         mDatas=new LinkedList<>();
         mAdapter = new GroupListAdapter(mDatas,mInflater);
+        Listener.onGroupListListener = this;
+        ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_LIST,"",""));
     }
 
-    public void addGroup(String user) {
-        mDatas.add(user);
+    @Override
+    public void onResume() {
+        super.onResume();
         mAdapter.notifyDataSetChanged();
+        //ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_LIST,"",""));
     }
+
 
     @Nullable
     @Override
@@ -69,5 +78,12 @@ public class MenuTabGroups extends Fragment {
 
         mAdapter.notifyDataSetChanged();
         return view;
+    }
+
+    @Override
+    public void OnGroupList(List<String> groups) {
+        mDatas.clear();
+        mDatas.addAll(groups);
+        mAdapter.notifyDataSetChanged();
     }
 }

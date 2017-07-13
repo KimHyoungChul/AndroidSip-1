@@ -31,24 +31,23 @@ public class MenuTabNewFriends extends Fragment implements Listener.OnNewFriendL
     private ListView mFriends;
     private View mEmptyView;
     private List<String> mDatas;
-    private List<String> addresss;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mInflater = LayoutInflater.from(getActivity());
         mDatas = new ArrayList<>();
-        addresss = new ArrayList<>();
         mAdapter = new FriendListAdapter(mDatas,mInflater);
         Listener.onNewFriendListListener = this;
         ActionHolder.getInstance().addAction(new Interaction(Action.ALL_FRIEND,"",""));
-        refreash();
+        refresh();
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        refreash();
+        //ActionHolder.getInstance().addAction(new Interaction(Action.ALL_FRIEND,"",""));
+        refresh();
     }
 
 
@@ -77,19 +76,15 @@ public class MenuTabNewFriends extends Fragment implements Listener.OnNewFriendL
         mDatas.add(user);
         mAdapter.notifyDataSetChanged();
     }
-    public void refreash()
+    public void refresh()
     {
-
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void OnNewFriendList(List<String> users) {
         mDatas.clear();
-        for(int i = 0;i < users.size();i += 2) {
-            mDatas.add(users.get(i));
-            addresss.add(users.get(i + 1));
-        }
-        refreash();
+        mDatas.addAll(users);
+        refresh();
     }
 }

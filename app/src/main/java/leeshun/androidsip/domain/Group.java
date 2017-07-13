@@ -9,6 +9,10 @@ public class Group {
     private String user;
     private int headIcon;
 
+    public Group(String groupID) {
+        this.groupID = groupID;
+    }
+
     public Group(String groupID, String user, int headIcon) {
         this.groupID = groupID;
         this.user = user;

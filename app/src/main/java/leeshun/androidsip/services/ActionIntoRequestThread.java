@@ -55,7 +55,7 @@ public class ActionIntoRequestThread implements Runnable {
         Action action = interaction.getAction();
         Request request = null;
         if(action == Action.GROUP_MESSAGE) {
-            request =  maker.makeGroupMessage(SipProfile.getInstance().getRemoteSipAddress(),interaction.getTo() + "#" + interaction.getMessage());
+            request =  maker.makeGroupMessage(SipProfile.getInstance().getRemoteSipAddress(),interaction.getMessage());
         }
         else if(action == Action.JOIN_GROUP ) {
             request = maker.makeJoinGroup(SipProfile.getInstance().getRemoteSipAddress(),
@@ -98,6 +98,8 @@ public class ActionIntoRequestThread implements Runnable {
             request = maker.makeAllFriends(SipProfile.getInstance().getRemoteSipAddress());
         }
         else if(action == Action.ALL_GROUP) {
+            System.err.println("---------------------------------------------");
+            System.err.println(SipProfile.getInstance().getRemoteSipAddress());
             request = maker.makeAllGroups(SipProfile.getInstance().getRemoteSipAddress());
         }
         return request;

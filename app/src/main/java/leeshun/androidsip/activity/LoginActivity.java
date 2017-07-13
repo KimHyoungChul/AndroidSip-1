@@ -37,7 +37,7 @@ public class LoginActivity extends FragmentActivity implements Listener.OnLoginL
             @Override
             public void run() {
                 try {
-                    new SipService(LoginActivity.this,"aa","10.128.194.130",5060);
+                    new SipService(LoginActivity.this,"aa","10.209.4.207",5060);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }

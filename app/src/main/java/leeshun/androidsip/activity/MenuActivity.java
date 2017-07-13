@@ -21,6 +21,7 @@ import leeshun.androidsip.R;
 import leeshun.androidsip.ui.MenuTabFriends;
 import leeshun.androidsip.ui.MenuTabGroups;
 import leeshun.androidsip.ui.MenuTabNewFriends;
+import leeshun.androidsip.ui.MenuTabNewGroups;
 
 public class MenuActivity extends FragmentActivity {
     private ViewPager mViewPager;
@@ -35,7 +36,7 @@ public class MenuActivity extends FragmentActivity {
     private MenuTabFriends mFrined;
     private MenuTabGroups mGroup;
     private MenuTabNewFriends newFriends;
-    private MenuTabGroups newGroups;
+    private MenuTabNewGroups newGroups;
     private ImageView mTabLine;
     private int screenWidth;
     private int currentIndex;
@@ -152,7 +153,7 @@ public class MenuActivity extends FragmentActivity {
         mFrined = new MenuTabFriends();
         mGroup  = new MenuTabGroups();
         newFriends = new MenuTabNewFriends();
-        newGroups = new MenuTabGroups();
+        newGroups = new MenuTabNewGroups();
         mFragments.add(mFrined);
         mFragments.add(mGroup);
         mFragments.add(newFriends);

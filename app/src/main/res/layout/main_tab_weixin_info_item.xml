@@ -35,7 +35,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="3dp"
             android:layout_toRightOf="@id/header_icon"
-            android:text="你滚...." />
+            android:text="" />
     </RelativeLayout>
 
 </RelativeLayout>

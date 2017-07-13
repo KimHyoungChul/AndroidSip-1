@@ -42,6 +42,7 @@ public class SipProfile {
     }
 
     public String getLocalIP() {
+        Log.d(TAG,"getting localIP " + localIP);
         return localIP;
     }
 

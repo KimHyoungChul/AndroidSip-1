@@ -1,14 +1,18 @@
 package leeshun.androidsip.handler;
 
 import android.javax.sip.RequestEvent;
+import android.javax.sip.SipException;
 import android.javax.sip.header.FromHeader;
 import android.javax.sip.header.ToHeader;
 import android.javax.sip.message.Request;
+import android.javax.sip.message.Response;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import leeshun.androidsip.domain.ChatMessage;
 import leeshun.androidsip.manager.MessageApplication;
+import leeshun.androidsip.manager.SipManager;
 import leeshun.androidsip.state.State;
 
 /**
@@ -57,9 +61,22 @@ public class RequestHandler {
 
         switch (type) {
             case State.PERSON_MESSAGE:
-                onPersonMessage(message);
+                try {
+                    onPersonMessage(message);
+                } catch (SipException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case State.GROUP_MESSAGE:
+                try {
+                    onGroupMessage(message);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (SipException e) {
+                    e.printStackTrace();
+                }
                 break;
             case State.JOIN_GROUP:
                 break;
@@ -68,8 +85,25 @@ public class RequestHandler {
         }
     }
 
-    private void onPersonMessage(String message) {
-        System.err.println(message);
+    private void onGroupMessage(String message) throws ParseException, SipException {
+        String from = ((FromHeader)request.getHeader(FromHeader.NAME)).getAddress().getDisplayName();
+        String owner = message.substring(0,message.indexOf('#'));
+        String content = message.substring(message.indexOf('#') + 1);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setNickname(owner);
+        chatMessage.setUserId(from);
+        chatMessage.setMessage(content);
+        chatMessage.setDate(new Date());
+        chatMessage.setGroupId(1);
+        chatMessage.setComing(true);
+        MessageApplication.getInstance().addMessage(chatMessage);
+
+        Response response = SipManager.getInstance().getMessageFactory().createResponse(Response.OK,request);
+
+        SipManager.getInstance().getSipProvider().sendResponse(response);
+    }
+
+    private void onPersonMessage(String message) throws SipException, ParseException {
         String from = ((FromHeader)request.getHeader(FromHeader.NAME)).getAddress().getDisplayName();
         String owner = ((ToHeader)request.getHeader(ToHeader.NAME)).getAddress().getDisplayName();
         ChatMessage chatMessage = new ChatMessage();
@@ -78,8 +112,11 @@ public class RequestHandler {
         chatMessage.setMessage(message);
         chatMessage.setDate(new Date());
         chatMessage.setComing(true);
-        chatMessage.setReaded(false);
 
         MessageApplication.getInstance().addMessage(chatMessage);
+
+        Response response = SipManager.getInstance().getMessageFactory().createResponse(Response.OK,request);
+
+        SipManager.getInstance().getSipProvider().sendResponse(response);
     }
 }

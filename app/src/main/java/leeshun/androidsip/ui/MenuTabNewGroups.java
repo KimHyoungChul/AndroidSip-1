@@ -1,6 +1,7 @@
 package leeshun.androidsip.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import leeshun.androidsip.R;
 import leeshun.androidsip.domain.Interaction;
 import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.manager.ActionHolder;
+import leeshun.androidsip.manager.GroupHolder;
 import leeshun.androidsip.state.Action;
 import leeshun.androidsip.util.GroupListAdapter;
 
@@ -28,6 +31,7 @@ public class MenuTabNewGroups extends Fragment implements Listener.OnNewGroupLis
     private LayoutInflater mInflater;
     private ListView mFriends;
     private View mEmptyView;
+    private Handler handler;
     private List<String> mDatas;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class MenuTabNewGroups extends Fragment implements Listener.OnNewGroupLis
         mDatas = new ArrayList<>();
         mAdapter = new GroupListAdapter(mDatas,mInflater);
         Listener.onNewGroupListListener = this;
+        handler = new Handler();
         ActionHolder.getInstance().addAction(new Interaction(Action.ALL_GROUP,"",""));
         refreash();
     }
@@ -44,6 +49,7 @@ public class MenuTabNewGroups extends Fragment implements Listener.OnNewGroupLis
     public void onResume()
     {
         super.onResume();
+        //ActionHolder.getInstance().addAction(new Interaction(Action.ALL_GROUP,"",""));
         refreash();
     }
 
@@ -59,21 +65,14 @@ public class MenuTabNewGroups extends Fragment implements Listener.OnNewGroupLis
         mFriends.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //add friend
-
+                ActionHolder.getInstance().addAction(new Interaction(Action.JOIN_GROUP,"",mDatas.get(position)));
             }
         });
         mAdapter.notifyDataSetChanged();
         return view;
     }
-    public void addGroup(String user) {
-        mDatas.add(user);
-        mAdapter.notifyDataSetChanged();
-    }
-    public void refreash()
-    {
 
+    public void refreash() {
         mAdapter.notifyDataSetChanged();
     }
 
@@ -83,5 +82,30 @@ public class MenuTabNewGroups extends Fragment implements Listener.OnNewGroupLis
         mDatas.clear();
         mDatas.addAll(groups);
         refreash();
+    }
+
+    @Override
+    public void addGroup(String groupName, boolean isAdd) {
+        System.err.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        if(isAdd) {
+            mDatas.remove(groupName);
+            refreash();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(),"加群成功",Toast.LENGTH_SHORT).show();
+                }
+            });
+            System.err.println("@@@@@@@@@@@@@@" + groupName);
+            GroupHolder.getInstance().addGroup(groupName);
+        } else {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(),"加群失败",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
     }
 }

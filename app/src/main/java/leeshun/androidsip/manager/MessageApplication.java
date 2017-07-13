@@ -26,17 +26,16 @@ public class MessageApplication {
 
 
 
-    public  void addMessage(ChatMessage msg) {
-        System.err.println(msg.toString());
+    public void addMessage(ChatMessage msg) {
         chatmsglist.add(msg);
     }
 
-    public  List<ChatMessage> getMessage(int count) {
-        List<ChatMessage>mdatas=new ArrayList<ChatMessage>();
-        for(int i = 0;i < count && i < chatmsglist.size();) {
-            mdatas.add(chatmsglist.get(i));
-
-            i++;
+    public List<ChatMessage> getMessage(String userName,int groupID) {
+        List<ChatMessage> mdatas = new ArrayList<>();
+        for(ChatMessage each : chatmsglist) {
+            if(each.getNickname().equals(userName) && each.getGroupId() == groupID) {
+                mdatas.add(each);
+            }
         }
         return  mdatas;
     }

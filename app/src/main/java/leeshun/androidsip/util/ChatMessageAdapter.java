@@ -49,8 +49,7 @@ public class ChatMessageAdapter extends BaseAdapter {
         if (convertView == null)
         {
             viewHolder = new ViewHolder();
-            if (chatMessage.isComing())
-            {
+            if (chatMessage.isComing()) {
                 convertView = inflater.inflate(R.layout.main_chat_from_msg,
                         parent, false);
                 viewHolder.createDate = (TextView) convertView
@@ -60,8 +59,8 @@ public class ChatMessageAdapter extends BaseAdapter {
                 viewHolder.nickname = (TextView) convertView
                         .findViewById(R.id.chat_from_name);
                 convertView.setTag(viewHolder);
-            } else
-            {
+                viewHolder.nickname.setText(chatMessage.getNickname());
+            } else {
                 convertView = inflater.inflate(R.layout.main_chat_send_msg,
                         null);
                 viewHolder.createDate = (TextView) convertView
@@ -71,6 +70,7 @@ public class ChatMessageAdapter extends BaseAdapter {
                 viewHolder.nickname = (TextView) convertView
                         .findViewById(R.id.chat_send_name);
                 convertView.setTag(viewHolder);
+                viewHolder.nickname.setText(chatMessage.getUserId());
             }
 
         } else
@@ -81,7 +81,6 @@ public class ChatMessageAdapter extends BaseAdapter {
 //		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         viewHolder.content.setText(chatMessage.getMessage());
         viewHolder.createDate.setText(chatMessage.getDateStr());
-        viewHolder.nickname.setText(chatMessage.getNickname());
 
         return convertView;
     }
