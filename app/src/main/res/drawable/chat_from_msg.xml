@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/chatfrom_bg_focused_9" android:state_focused="true"></item>
+    <item android:drawable="@drawable/chatfrom_bg_pressed_9" android:state_pressed="true"></item>
+    
+    <item android:drawable="@drawable/chatfrom_bg_normal_9"></item>
+
+</selector>
