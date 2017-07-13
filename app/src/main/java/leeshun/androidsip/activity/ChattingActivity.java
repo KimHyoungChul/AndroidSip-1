@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,14 +91,21 @@ public class ChattingActivity extends Activity {
                     System.err.println("person message");
                     System.err.println(FriendHolder.getInstance().getSipAddress(user) + "hh");
                     if (FriendHolder.getInstance().getSipAddress(user).equals("")) {
+                        Toast.makeText(ChattingActivity.this,"对方不在线",Toast.LENGTH_SHORT).show();
                         System.err.println("into subscribe");
-                        ActionHolder.getInstance().addAction(new Interaction(Action.SUBSCRIBE, "", user));
+                        //ActionHolder.getInstance().addAction(new Interaction(Action.SUBSCRIBE, "", user));
+                    } else {
+                        System.err.println(FriendHolder.getInstance().getSipAddress(user));
+                        ActionHolder.getInstance().addAction(new Interaction(Action.PERSON_MESSAGE,
+                                FriendHolder.getInstance().getSipAddress(user),msg));
+                        chatMessage.setSend(true);
                     }
                 } else {
-                    ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_MESSAGE,"",user + "#" + msg));
+                    ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_MESSAGE,
+                            FriendHolder.getInstance().getSipAddress(user),user + "#" + msg));
                 }
-                /*
-                new Thread(new Runnable() {
+
+                /*new Thread(new Runnable() {
                     @Override
                     public void run() {
                         while (true) {

@@ -88,7 +88,8 @@ public class ActionIntoRequestThread implements Runnable {
             request = maker.makePublish(SipProfile.getInstance().getRemoteSipAddress(),SipProfile.getInstance().getLocalIP());
         }
         else if(action == Action.PERSON_MESSAGE) {
-            request = maker.makeMessage(friendHolder.getSipAddress(interaction.getTo()),interaction.getMessage());
+            System.err.println("Person" + interaction.getTo());
+            request = maker.makeMessage(interaction.getTo(),interaction.getMessage());
         }
         else if(action == Action.REGISTER) {
             request = maker.makeRegister(SipProfile.getInstance().getRemoteSipAddress(),interaction.getMessage());

@@ -50,6 +50,7 @@ public class HeaderMaker {
 
 
     public String getUsername(String to) {
+        System.err.println(to);
         return to.substring(to.indexOf(":") + 1, to.indexOf("@"));
     }
 

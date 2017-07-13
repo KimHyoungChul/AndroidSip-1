@@ -13,6 +13,7 @@ import android.javax.sip.SipProvider;
 import android.javax.sip.TimeoutEvent;
 import android.javax.sip.TransactionTerminatedEvent;
 import android.javax.sip.TransportNotSupportedException;
+import android.javax.sip.header.FromHeader;
 import android.javax.sip.message.Request;
 import android.javax.sip.message.Response;
 import android.net.wifi.WifiInfo;
@@ -22,13 +23,16 @@ import android.util.Log;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TooManyListenersException;
 
+import leeshun.androidsip.domain.ChatMessage;
 import leeshun.androidsip.domain.Friend;
 import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.handler.RequestHandler;
 import leeshun.androidsip.manager.FriendHolder;
+import leeshun.androidsip.manager.MessageApplication;
 import leeshun.androidsip.manager.SipManager;
 import leeshun.androidsip.manager.SipProfile;
 import leeshun.androidsip.state.State;
@@ -118,7 +122,8 @@ public class SipService implements SipListener{
     @Override
     public void processResponse(ResponseEvent responseEvent) {
         Response response = responseEvent.getResponse();
-        String method = responseEvent.getClientTransaction().getRequest().getMethod();
+        Request request = responseEvent.getClientTransaction().getRequest();
+        String method = request.getMethod();
         String content = new String(responseEvent.getClientTransaction().getRequest().getRawContent());
         String type = content.substring(0,4);
 
@@ -139,6 +144,19 @@ public class SipService implements SipListener{
                         Listener.OnLogin(false);
                     }
                 }
+                else if(type.equals(State.PERSON_MESSAGE)) {
+                    String message = content.substring(4);
+                    ChatMessage chatMessage = new ChatMessage();
+                    chatMessage.setSend(true);
+                    chatMessage.setGroupId(0);
+                    chatMessage.setUserId(SipProfile.getInstance().getSipUserName());
+                    chatMessage.setDate(new Date());
+                    chatMessage.setComing(true);
+                    chatMessage.setReaded(false);
+                    chatMessage.setMessage(message);
+                    chatMessage.setNickname(((FromHeader)request.getHeader(FromHeader.NAME)).getAddress().getDisplayName());
+                    MessageApplication.getInstance().addMessage(chatMessage);
+                }
                 else if(type.equals(State.ALL_FRIEND)) {
                     String result = new String(response.getRawContent());
                     String[] friends = result.split(";");
@@ -152,15 +170,18 @@ public class SipService implements SipListener{
                     String result = new String(response.getRawContent());
                     String[] friends = result.split(";");
                     List<String> list = new ArrayList<>();
-                    for(int i = 0;i < friends.length;++i) {
-                        FriendHolder.getInstance().addFriend(new Friend(friends[i],""));
+                    for(int i = 0;i < friends.length;i += 2) {
+                        FriendHolder.getInstance().addFriend(new Friend(friends[i],friends[i + 1]));
                         list.add(friends[i]);
                     }
                     Listener.OnFriend(list);
                 }
                 break;
 
-            case Request.SUBSCRIBE:
+            case Request.INFO:
+                String username = content.substring(0,content.indexOf('#'));
+                String ipAddress = content.substring(content.indexOf('#') + 1);
+                FriendHolder.getInstance().updateAddress(username,ipAddress);
                 break;
         }
 
