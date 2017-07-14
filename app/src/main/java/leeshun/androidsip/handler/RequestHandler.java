@@ -86,6 +86,7 @@ public class RequestHandler {
     }
 
     private void onGroupMessage(String message) throws ParseException, SipException {
+        System.err.println("-----------------" + message);
         String from = ((FromHeader)request.getHeader(FromHeader.NAME)).getAddress().getDisplayName();
         String owner = message.substring(0,message.indexOf('#'));
         String content = message.substring(message.indexOf('#') + 1);

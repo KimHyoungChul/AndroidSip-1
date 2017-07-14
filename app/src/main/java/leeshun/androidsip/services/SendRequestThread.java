@@ -35,7 +35,7 @@ public class SendRequestThread implements Runnable{
     public void run() {
         while (true) {
             try {
-                System.err.println("start send");
+                //System.err.println("start send");
                 Request request = helper.getTask();
                 System.err.println(request.toString());
                 ClientTransaction transaction = provider.getNewClientTransaction(request);

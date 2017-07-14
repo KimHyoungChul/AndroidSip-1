@@ -59,7 +59,11 @@ public class ChatMessageAdapter extends BaseAdapter {
                 viewHolder.nickname = (TextView) convertView
                         .findViewById(R.id.chat_from_name);
                 convertView.setTag(viewHolder);
-                viewHolder.nickname.setText(chatMessage.getNickname());
+                if(chatMessage.getGroupId() == 0) {
+                    viewHolder.nickname.setText(chatMessage.getNickname());
+                } else {
+                    viewHolder.nickname.setText(chatMessage.getUserId());
+                }
             } else {
                 convertView = inflater.inflate(R.layout.main_chat_send_msg,
                         null);
@@ -71,6 +75,7 @@ public class ChatMessageAdapter extends BaseAdapter {
                         .findViewById(R.id.chat_send_name);
                 convertView.setTag(viewHolder);
                 viewHolder.nickname.setText(chatMessage.getUserId());
+
             }
 
         } else
