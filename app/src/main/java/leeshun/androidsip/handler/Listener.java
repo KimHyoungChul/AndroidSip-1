@@ -13,7 +13,7 @@ public class Listener {
     public static OnNewGroupListListener onNewGroupListListener;
     public static OnFriendListListener onFriendListListener;
     public static OnGroupListListener onGroupListListener;
-
+    public static OnNewMessageListener onNewMessageListener;
     public static interface OnGroupListListener {
         public void OnGroupList(List<String> groups);
     }
@@ -37,6 +37,9 @@ public class Listener {
 
     public static interface OnFriendListListener {
         public void OnFriendList(List<String> users);
+    }
+    public static interface OnNewMessageListener{
+        public void OnNewMessage();
     }
 
 
@@ -67,6 +70,13 @@ public class Listener {
 
     public static void OnGroupList(List<String> groups) {
         onGroupListListener.OnGroupList(groups);
+    }
+    public static void OnNewMessage()
+    {
+        if( onNewMessageListener!=null)
+        {
+            onNewMessageListener.OnNewMessage();
+        }
     }
 
 }
