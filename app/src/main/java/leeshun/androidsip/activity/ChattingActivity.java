@@ -3,6 +3,7 @@ package leeshun.androidsip.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.List;
 import leeshun.androidsip.R;
 import leeshun.androidsip.domain.ChatMessage;
 import leeshun.androidsip.domain.Interaction;
+import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.manager.ActionHolder;
 import leeshun.androidsip.manager.FriendHolder;
 import leeshun.androidsip.manager.MessageApplication;
@@ -31,7 +33,7 @@ import leeshun.androidsip.util.ChatMessageAdapter;
  * Created by leeshun on 2017/7/13.
  */
 
-public class ChattingActivity extends Activity {
+public class ChattingActivity extends Activity implements Listener.OnNewMessageListener{
     private TextView mNickName;
     private EditText mMsgInput;
     private Button mMsgSend;
@@ -40,15 +42,15 @@ public class ChattingActivity extends Activity {
     private ChatMessageAdapter mAdapter;
     private int groupId;
     private String user;
-
+    private android.os.Handler handler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_chatting);
-
+        handler=new Handler();
         mDatas = new ArrayList<>();
         groupId = getIntent().getIntExtra("GroupId",0);
-
+        Listener.onNewMessageListener=this;
         initializeView();
         initializeEvent();
     }
@@ -127,5 +129,19 @@ public class ChattingActivity extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public void OnNewMessage() {
+
+        mDatas.clear();
+        mDatas.addAll(MessageApplication.getInstance().getMessage(user,groupId));
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 }
