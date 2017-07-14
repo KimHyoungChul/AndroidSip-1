@@ -18,6 +18,7 @@ import leeshun.androidsip.activity.ChattingActivity;
 import leeshun.androidsip.domain.Interaction;
 import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.manager.ActionHolder;
+import leeshun.androidsip.manager.GroupHolder;
 import leeshun.androidsip.state.Action;
 import leeshun.androidsip.util.GroupListAdapter;
 
@@ -45,6 +46,8 @@ public class MenuTabGroups extends Fragment implements Listener.OnGroupListListe
     @Override
     public void onResume() {
         super.onResume();
+        mDatas.clear();
+        mDatas.addAll(GroupHolder.getInstance().getAllGroups());
         mAdapter.notifyDataSetChanged();
         //ActionHolder.getInstance().addAction(new Interaction(Action.GROUP_LIST,"",""));
     }

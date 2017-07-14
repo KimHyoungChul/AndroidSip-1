@@ -54,7 +54,9 @@ public class FriendListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.mNickname.setText(users.get(position));
+        if(position < users.size()) {
+            holder.mNickname.setText(users.get(position));
+        }
         return convertView;
     }
 

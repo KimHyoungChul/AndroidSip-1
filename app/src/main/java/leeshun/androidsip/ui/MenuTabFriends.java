@@ -18,6 +18,7 @@ import leeshun.androidsip.activity.ChattingActivity;
 import leeshun.androidsip.domain.Interaction;
 import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.manager.ActionHolder;
+import leeshun.androidsip.manager.FriendHolder;
 import leeshun.androidsip.state.Action;
 import leeshun.androidsip.util.FriendListAdapter;
 
@@ -45,7 +46,10 @@ public class MenuTabFriends extends Fragment implements Listener.OnFriendListLis
     @Override
     public void onResume() {
         super.onResume();
-        //ActionHolder.getInstance().addAction(new Interaction(Action.FRIEND_LIST,"", ""));
+        mDatas.clear();
+        mDatas.addAll(FriendHolder.getInstance().getFriends());
+        mAdapter.notifyDataSetChanged();
+        ActionHolder.getInstance().addAction(new Interaction(Action.FRIEND_LIST,"", ""));
     }
 
     @Nullable
@@ -69,10 +73,6 @@ public class MenuTabFriends extends Fragment implements Listener.OnFriendListLis
         return view;
     }
 
-    public void addFriend(String user) {
-        mDatas.add(user);
-        mAdapter.notifyDataSetChanged();
-    }
 
 
     @Override

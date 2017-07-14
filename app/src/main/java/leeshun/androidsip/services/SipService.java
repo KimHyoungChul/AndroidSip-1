@@ -124,9 +124,9 @@ public class SipService implements SipListener{
     public void processResponse(ResponseEvent responseEvent) {
         Response response = responseEvent.getResponse();
         Request request = responseEvent.getClientTransaction().getRequest();
+        System.err.println(request.getMethod() + "------------------------");
         String method = request.getMethod();
-        String content = new String(responseEvent.getClientTransaction().getRequest().getRawContent());
-        String type = content.substring(0,4);
+        String content = new String(request.getRawContent());
 
         int status = response.getStatusCode();
         switch (method) {
@@ -134,6 +134,8 @@ public class SipService implements SipListener{
                 processRegister(status);
                 break;
             case Request.MESSAGE:
+
+                String type = content.substring(0,4);
                 if(type.equals(State.LOGIN)) {
                     processLogin(status);
                 }
@@ -165,9 +167,15 @@ public class SipService implements SipListener{
                 }
                 break;
             case Request.INFO:
-                String username = content.substring(0,content.indexOf('#'));
-                String ipAddress = content.substring(content.indexOf('#') + 1);
+                String responseContent = new String(response.getRawContent());
+
+                System.err.println("hhhhhhhhhhhhhahhghghhghg" + responseContent);
+
+                String username = responseContent.substring(0,responseContent.indexOf('#'));
+                String ipAddress = responseContent.substring(responseContent.indexOf('#') + 1);
                 FriendHolder.getInstance().updateAddress(username,ipAddress);
+                System.err.println("lllllllllllllllllllll" + username);
+                Listener.AddFriend(username);
                 break;
         }
 
@@ -197,17 +205,17 @@ public class SipService implements SipListener{
 
     private void processLogin(int status) {
         if(status == Response.OK) {
-            Listener.OnRegister(true);
+            Listener.OnLogin(true);
         } else {
-            Listener.OnRegister(false);
+            Listener.OnLogin(false);
         }
     }
 
     private void processRegister(int status) {
         if(status == Response.OK) {
-            Listener.OnLogin(true);
+            Listener.OnRegister(true);
         } else {
-            Listener.OnLogin(false);
+            Listener.OnRegister(false);
         }
     }
 

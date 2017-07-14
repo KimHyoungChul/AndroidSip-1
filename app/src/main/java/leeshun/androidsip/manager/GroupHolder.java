@@ -32,6 +32,10 @@ public class GroupHolder {
         return false;
     }
 
+    public List<String> getAllGroups() {
+        return groups;
+    }
+
     public boolean addGroup(String groupName) {
         return groups.add(groupName);
     }

@@ -1,7 +1,7 @@
 package leeshun.androidsip.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leeshun.androidsip.R;
-import leeshun.androidsip.activity.ChattingActivity;
 import leeshun.androidsip.domain.Interaction;
 import leeshun.androidsip.handler.Listener;
 import leeshun.androidsip.manager.ActionHolder;
@@ -30,6 +29,7 @@ public class MenuTabNewFriends extends Fragment implements Listener.OnNewFriendL
     private LayoutInflater mInflater;
     private ListView mFriends;
     private View mEmptyView;
+    private Handler handler;
     private List<String> mDatas;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class MenuTabNewFriends extends Fragment implements Listener.OnNewFriendL
         mDatas = new ArrayList<>();
         mAdapter = new FriendListAdapter(mDatas,mInflater);
         Listener.onNewFriendListListener = this;
+        handler = new Handler();
         ActionHolder.getInstance().addAction(new Interaction(Action.ALL_FRIEND,"",""));
         refresh();
     }
@@ -64,18 +65,14 @@ public class MenuTabNewFriends extends Fragment implements Listener.OnNewFriendL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //add friend
-                Intent intent = new Intent(getActivity(),ChattingActivity.class);
-                intent.putExtra("user",mDatas.get(position));
-                startActivity(intent);
+                ActionHolder.getInstance().addAction(new Interaction(Action.SUBSCRIBE,"",mDatas.get(position)));
             }
         });
         mAdapter.notifyDataSetChanged();
         return view;
     }
-    public void addFriend(String user) {
-        mDatas.add(user);
-        mAdapter.notifyDataSetChanged();
-    }
+
+
     public void refresh()
     {
         mAdapter.notifyDataSetChanged();
@@ -86,5 +83,18 @@ public class MenuTabNewFriends extends Fragment implements Listener.OnNewFriendL
         mDatas.clear();
         mDatas.addAll(users);
         refresh();
+    }
+
+    @Override
+    public void addFriend(String username) {
+        System.err.println("hhhhhhhhhhhhhhhhh------------infriens" + username);
+        mDatas.remove(username);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 }

@@ -28,6 +28,7 @@ public class Listener {
 
     public static interface OnNewFriendListListener {
         public void OnNewFriendList(List<String> users);
+        public void addFriend(String username);
     }
 
     public static interface OnNewGroupListListener {
@@ -51,6 +52,11 @@ public class Listener {
 
     public static void OnNewFriendList(List<String> users) {
         onNewFriendListListener.OnNewFriendList(users);
+    }
+
+    public static void AddFriend(String friend) {
+        System.err.println("gggggggggggg" + friend);
+        onNewFriendListListener.addFriend(friend);
     }
 
     public static void OnNewGroupList(List<String> groups) {

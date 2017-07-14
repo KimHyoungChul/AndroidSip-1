@@ -89,10 +89,10 @@ public class MenuTabNewGroups extends Fragment implements Listener.OnNewGroupLis
         System.err.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         if(isAdd) {
             mDatas.remove(groupName);
-            refreash();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    refreash();
                     Toast.makeText(getActivity(),"加群成功",Toast.LENGTH_SHORT).show();
                 }
             });

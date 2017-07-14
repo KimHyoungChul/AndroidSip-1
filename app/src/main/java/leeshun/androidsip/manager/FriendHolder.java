@@ -39,6 +39,14 @@ public class FriendHolder {
         return false;
     }
 
+    public List<String> getFriends() {
+        List<String> result = new ArrayList<>();
+        for(Friend each : friends) {
+            result.add(each.getUsername());
+        }
+        return result;
+    }
+
     public String getSipAddress(String username) {
         for(Friend each : friends) {
             if(each.getUsername().equals(username) && !each.getIpAddress().equals("")) {

@@ -62,6 +62,7 @@ public class RequestHandler {
         switch (type) {
             case State.PERSON_MESSAGE:
                 try {
+                    System.err.println(message + "-------------------------------");
                     onPersonMessage(message);
                 } catch (SipException e) {
                     e.printStackTrace();
