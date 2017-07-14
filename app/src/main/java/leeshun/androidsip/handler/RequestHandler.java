@@ -103,6 +103,7 @@ public class RequestHandler {
         Response response = SipManager.getInstance().getMessageFactory().createResponse(Response.OK,request);
 
         SipManager.getInstance().getSipProvider().sendResponse(response);
+        Listener.OnNewMessage();
     }
 
     private void onPersonMessage(String message) throws SipException, ParseException {
@@ -120,5 +121,6 @@ public class RequestHandler {
         Response response = SipManager.getInstance().getMessageFactory().createResponse(Response.OK,request);
 
         SipManager.getInstance().getSipProvider().sendResponse(response);
+        Listener.OnNewMessage();
     }
 }
